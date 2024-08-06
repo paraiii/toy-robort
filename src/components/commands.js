@@ -1,26 +1,30 @@
+// src/commands.js
+
 export const DIRECTIONS = ["NORTH", "EAST", "SOUTH", "WEST"];
-export const TABLESIZE = 5;
+export const TABLE_SIZE = 5;
 
 export function isValidPosition(x, y) {
-  return x >= 0 && x < TABLESIZE && y >= 0 && y < TABLESIZE;
+  return x >= 0 && x < TABLE_SIZE && y >= 0 && y < TABLE_SIZE;
 }
 
 export function executeCommand(state, command) {
   const { x, y, f } = state;
+
   switch (command.type) {
     case "PLACE":
-      if (isValidPosition(state, command)) {
+      if (isValidPosition(command.x, command.y)) {
         return {
           ...state,
           x: command.x,
-          u: command.y,
+          y: command.y,
           f: command.f,
           placed: true,
         };
       }
       return state;
+
     case "MOVE":
-      if (!state.place) return state;
+      if (!state.placed) return state;
       let newX = x;
       let newY = y;
 
@@ -28,7 +32,7 @@ export function executeCommand(state, command) {
         case "NORTH":
           newY += 1;
           break;
-        case "South":
+        case "SOUTH":
           newY -= 1;
           break;
         case "EAST":
@@ -40,30 +44,26 @@ export function executeCommand(state, command) {
         default:
           break;
       }
+
       if (isValidPosition(newX, newY)) {
-        return {
-          ...state,
-          x: newX,
-          y: newY,
-        };
+        return { ...state, x: newX, y: newY };
       }
       return state;
 
     case "LEFT":
-      if (!state.place) return state;
-      return {
-        ...state,
-        f: DIRECTIONS[(DIRECTIONS.indexOf(f) + 3) % 4],
-      };
+      if (!state.placed) return state;
+      return { ...state, f: DIRECTIONS[(DIRECTIONS.indexOf(f) + 3) % 4] };
+
     case "RIGHT":
-      if (!state.place) return state;
-      return {
-        ...state,
-        f: DIRECTIONS[(DIRECTIONS.indexOf(f) + 1) % 4],
-      };
+      if (!state.placed) return state;
+      return { ...state, f: DIRECTIONS[(DIRECTIONS.indexOf(f) + 1) % 4] };
+
     case "REPORT":
-      if (!state.place) return state;
-      console.log("Output: $(x), $(y), $(f)");
+      if (!state.placed) return state;
+      console.log(`Output: ${x},${y},${f}`);
+      return state;
+
+    default:
       return state;
   }
 }
