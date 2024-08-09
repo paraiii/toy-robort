@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { executeCommand, DIRECTIONS } from "./components/commands";
+import Grid from "./components/Grid";
 
 const App = () => {
   const [state, setState] = useState({ x: 0, y: 0, f: "NORTH", placed: false });
@@ -45,6 +46,7 @@ const App = () => {
           <p>The robot is not placed on the table</p>
         )}
       </div>
+      <Grid robot={state} />
     </div>
   );
 };
