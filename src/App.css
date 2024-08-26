@@ -1,32 +1,78 @@
 /* src/App.css */
 .app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
-.input-container {
-  margin: 20px 0;
+.grid-with-directions {
+  position: relative;
+  margin: 20px;
 }
 
-.table {
-  display: inline-block;
-  margin: 20px auto;
-  border: 2px solid #000;
+.direction {
+  position: absolute;
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
-.row {
-  display: flex;
+.north {
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.cell {
-  width: 50px;
-  height: 50px;
-  border: 1px solid #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
+.south {
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.robot {
-  background-color: yellow;
+.east {
+  top: 50%;
+  right: -40px;
+  transform: translateY(-50%);
+}
+
+.west {
+  top: 50%;
+  left: -40px;
+  transform: translateY(-50%);
+}
+
+.robot-controls {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.robot-controls p {
+  margin: 5px 0;
+  font-size: 1.2em;
+}
+
+.robot-controls button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 1em;
+  border-radius: 5px;
+  border: 1px solid #007bff;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.robot-controls button:hover {
+  background-color: #0056b3;
+}
+
+.robot-controls button.reset-button {
+  background-color: #ff4c4c;
+  border: 1px solid #ff4c4c;
+}
+
+.robot-controls button.reset-button:hover {
+  background-color: #cc0000;
 }
