@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { RobotCommands } from "./components/RobotCommands";
 import { Grid } from "./components/Grid";
+import "./App.css";
+
+const directions = ["NORTH", "EAST", "SOUTH", "WEST"];
 
 export const App = () => {
   const [position, setPosition] = useState({ x: 0, y: 0, direction: "NORTH" });
@@ -27,33 +29,49 @@ export const App = () => {
     setPosition({ x, y, direction });
   };
 
+  //Function to rotate the direction to the left
   const rotateLeft = () => {
-    const directions = ["NORTH", "EAST", "SOUTH", "WEST"];
     const newDirection =
       directions[(directions.indexOf(position.direction) + 3) % 4];
     setPosition({ ...position, direction: newDirection });
   };
 
+  //Function to rotate the direction to the right
   const rotateRight = () => {
-    const directions = ["NORTH", "EAST", "SOUTH", "WEST"];
     const newDirection =
       directions[(directions.indexOf(position.direction) + 1) % 4];
     setPosition({ ...position, direction: newDirection });
   };
 
+  //Reset the position
+  const resetPosition = () => {
+    setPosition({ x: 0, y: 0, direction: "NORTH" });
+  };
+
   return (
-    <div className="App">
+    <div className="app">
       <h1>Robot on a 5x5 Grid</h1>
-      <Grid robotPosition={position} />
+      <div className="grid-with-directions">
+        <div className="direction north">N</div>
+        <div className="direction west">W</div>
+        <Grid robotPosition={position} />
+        <div className="direction east">E</div>
+        <div className="direction south">S</div>
+      </div>
       {/* Pass robot's position as props to Grid */}
       <div className="robot-controls">
         <p>
           Position: ({position.x}, {position.y})
         </p>
         <p>Facing: {position.direction}</p>
-        <button onClick={moveForward}>Move Forward</button>
-        <button onClick={rotateLeft}>Rotate Left</button>
-        <button onClick={rotateRight}>Rotate Right</button>
+        <div className="buttons-container">
+          <button onClick={rotateLeft}>Rotate Left</button>
+          <button onClick={rotateRight}>Rotate Right</button>
+          <button onClick={moveForward}>Move Forward</button>
+          <button onClick={resetPosition} className="reset-button">
+            Reset Position
+          </button>
+        </div>
       </div>
     </div>
   );
