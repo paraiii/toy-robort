@@ -1,30 +1,31 @@
 import React from "react";
 import "./Grid.css";
 
-const Grid = ({ robot }) => {
+export const Grid = ({ robotPosition }) => {
+  const rows = 5;
+  const cols = 5;
+
+  //Receiving robotPosition as props
   const createGrid = () => {
     let grid = [];
-    for (let y = 4; y >= 0; y--) {
+    for (let i = 0; i < rows; i++) {
       let row = [];
-      for (let x = 0; x < 5; x++) {
+      for (let j = 0; j < cols; j++) {
+        //Check if robot is exist
+        const isRobotHere = robotPosition.x === j && robotPosition.y === i;
         row.push(
-          <div className="cell" key={`${x},${y}`}>
-            {robot.x === x && robot.y === y && (
-              <div className={`robot ${robot.f.toLowerCase()}`}>🤖</div>
-            )}
+          <div key={`${i}-${j}`} className="grid-cell">
+            {isRobotHere ? <span className="robot-icon">🤖</span> : null}
           </div>
         );
       }
       grid.push(
-        <div className="row" key={y}>
+        <div key={i} className="grid-row">
           {row}
         </div>
       );
     }
     return grid;
   };
-
-  return <div className="grid">{createGrid()}</div>;
+  return <div className="grid-container">{createGrid()}</div>;
 };
-
-export default Grid;

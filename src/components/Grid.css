@@ -1,37 +1,21 @@
-.grid {
-  display: inline-block;
-  border: 2px solid black;
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  height: 250px;
 }
 
-.row {
+.grid-row {
   display: flex;
 }
 
-.cell {
+.grid-cell {
+  border: 1px solid #000;
   width: 50px;
   height: 50px;
-  border: 1px solid black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.robot {
-  font-size: 24px;
-}
-
-.robot.north::after {
-  content: "↑";
-}
-
-.robot.east::after {
-  content: "→";
-}
-
-.robot.south::after {
-  content: "↓";
-}
-
-.robot.west::after {
-  content: "←";
+.robot-icon {
+  font-size: 30px;
+  text-align: center;
 }

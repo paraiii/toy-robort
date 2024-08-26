@@ -1,54 +1,60 @@
 import React, { useState } from "react";
-import { executeCommand, DIRECTIONS } from "./components/commands";
-import Grid from "./components/Grid";
+import { RobotCommands } from "./components/RobotCommands";
+import { Grid } from "./components/Grid";
 
-const App = () => {
-  const [state, setState] = useState({ x: 0, y: 0, f: "NORTH", placed: false });
-  const [command, setCommand] = useState("");
+export const App = () => {
+  const [position, setPosition] = useState({ x: 0, y: 0, direction: "NORTH" });
+  const moveForward = () => {
+    let { x, y, direction } = position;
 
-  const handleCommand = () => {
-    const parts = command.trim().split(" ");
-    const action = parts[0];
-
-    if (action === "PLACE" && parts.length === 2) {
-      const args = parts[1].split(",");
-      const x = parseInt(args[0]);
-      const y = parseInt(args[1]);
-      const f = args[2];
-      if (DIRECTIONS.includes(f)) {
-        setState((prevState) =>
-          executeCommand(prevState, { type: "PLACE", x, y, f })
-        );
-      }
-    } else if (["MOVE", "LEFT", "RIGHT", "REPORT"].includes(action)) {
-      setState((prevState) => executeCommand(prevState, { type: action }));
+    switch (direction) {
+      case "NORTH":
+        if (y > 0) y--;
+        break;
+      case "SOUTH":
+        if (y < 4) y++;
+        break;
+      case "EAST":
+        if (x < 4) x++;
+        break;
+      case "WEST":
+        if (x > 0) x--;
+        break;
+      default:
+        break;
     }
 
-    setCommand("");
+    setPosition({ x, y, direction });
+  };
+
+  const rotateLeft = () => {
+    const directions = ["NORTH", "EAST", "SOUTH", "WEST"];
+    const newDirection =
+      directions[(directions.indexOf(position.direction) + 3) % 4];
+    setPosition({ ...position, direction: newDirection });
+  };
+
+  const rotateRight = () => {
+    const directions = ["NORTH", "EAST", "SOUTH", "WEST"];
+    const newDirection =
+      directions[(directions.indexOf(position.direction) + 1) % 4];
+    setPosition({ ...position, direction: newDirection });
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        value={command}
-        onChange={(e) => setCommand(e.target.value)}
-        placeholder="Enter command"
-      />
-      <button onClick={handleCommand}>Execute</button>
-      <div>
-        <h2> Position</h2>
-        {state.placed ? (
-          <p>
-            X: {state.x}, Y: {state.y}, F: {state.f}
-          </p>
-        ) : (
-          <p>The robot is not placed on the table</p>
-        )}
+    <div className="App">
+      <h1>Robot on a 5x5 Grid</h1>
+      <Grid robotPosition={position} />
+      {/* Pass robot's position as props to Grid */}
+      <div className="robot-controls">
+        <p>
+          Position: ({position.x}, {position.y})
+        </p>
+        <p>Facing: {position.direction}</p>
+        <button onClick={moveForward}>Move Forward</button>
+        <button onClick={rotateLeft}>Rotate Left</button>
+        <button onClick={rotateRight}>Rotate Right</button>
       </div>
-      <Grid robot={state} />
     </div>
   );
 };
-
-export default App;
